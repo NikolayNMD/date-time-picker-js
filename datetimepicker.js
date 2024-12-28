@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const picker = flatpickr("#flatpickr", {
+  flatpickr("#flatpickr", {
     enableTime: true,
     dateFormat: "Y-m-d H:i",
     time_24hr: true,
     inline: true,
     locale: "uk",
     onReady: function (selectedDates, dateStr, instance) {
+      const tg = window.Telegram.WebApp;
       instance.input.value = "Нічого не обрано";
       const clearButton = document.createElement("button");
       clearButton.textContent = "Очистити";
@@ -26,7 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
       okButton.disabled = true;
 
       okButton.addEventListener("click", function () {
-        alert(`Ви обрали: ${instance.input.value}`);
+        const dt = instance.input.value;
+
+        tg.sendData(
+          JSON.stringify({
+            dt: dt,
+          })
+        );
       });
 
       const buttonContainer = document.createElement("div");
