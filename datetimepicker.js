@@ -35,6 +35,22 @@ document.addEventListener("DOMContentLoaded", function () {
             dt: dt,
           })
         );
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.query_id) {
+          tg.answerWebAppQuery(
+            tg.initDataUnsafe.query_id,
+            JSON.stringify({
+              type: "article",
+              id: "1", // Унікальний ідентифікатор
+              title: "Вибрана дата",
+              input_message_content: {
+                message_text: `Обрана дата: ${dt}`,
+              },
+            })
+          );
+        } else {
+          console.error("Query ID відсутній.");
+        }
       });
 
       const buttonContainer = document.createElement("div");
