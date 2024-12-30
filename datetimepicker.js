@@ -30,27 +30,37 @@ document.addEventListener("DOMContentLoaded", function () {
       okButton.addEventListener("click", function () {
         const dt = instance.input.value;
 
-        tg.sendData(
-          JSON.stringify({
-            dt: dt,
-          })
-        );
+        // Check if the query_id is present
+        const queryId = tg.initDataUnsafe?.query_id;
 
-        if (tg.initDataUnsafe && tg.initDataUnsafe.query_id) {
-          tg.answerWebAppQuery(
-            tg.initDataUnsafe.query_id,
-            JSON.stringify({
-              type: "article",
-              id: "1", // Унікальний ідентифікатор
-              title: "Вибрана дата",
-              input_message_content: {
-                message_text: `Обрана дата: ${dt}`,
-              },
-            })
+        if (!queryId) {
+          console.error(
+            "Query ID is missing. Make sure this WebApp was opened via an interactive button."
           );
-        } else {
-          console.error("Query ID відсутній.");
+          alert(
+            "Query ID is missing. This action can only be performed through an interactive query."
+          );
+          return;
         }
+
+        // Prepare the result
+        const result = {
+          type: "article", // Mandatory field for the result type
+          id: "1", // A unique identifier for this result
+          title: "Selected Date",
+          input_message_content: {
+            message_text: `You selected the date: ${dt}`,
+          },
+        };
+
+        // Send the query result
+        tg.answerWebAppQuery(queryId, JSON.stringify(result))
+          .then((response) => {
+            console.log("Query answered successfully:", response);
+          })
+          .catch((error) => {
+            console.error("Failed to answer the query:", error);
+          });
       });
 
       const buttonContainer = document.createElement("div");
