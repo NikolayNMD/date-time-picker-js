@@ -30,37 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
       okButton.addEventListener("click", function () {
         const dt = instance.input.value;
 
-        // Check if the query_id is present
-        const queryId = tg.initDataUnsafe?.query_id;
-
-        if (!queryId) {
-          console.error(
-            "Query ID is missing. Make sure this WebApp was opened via an interactive button."
-          );
-          alert(
-            "Query ID is missing. This action can only be performed through an interactive query."
-          );
-          return;
-        }
-
-        // Prepare the result
-        const result = {
-          type: "article", // Mandatory field for the result type
-          id: "1", // A unique identifier for this result
-          title: "Selected Date",
-          input_message_content: {
-            message_text: `You selected the date: ${dt}`,
-          },
-        };
-
-        // Send the query result
-        tg.answerWebAppQuery(queryId, JSON.stringify(result))
-          .then((response) => {
-            console.log("Query answered successfully:", response);
+        tg.sendData(
+          JSON.stringify({
+            dt: dt,
           })
-          .catch((error) => {
-            console.error("Failed to answer the query:", error);
-          });
+        );
       });
 
       const buttonContainer = document.createElement("div");
