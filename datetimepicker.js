@@ -5,14 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
     time_24hr: true,
     inline: true,
     locale: "uk",
+    defaultDate: new Date(),
     onReady: function (selectedDates, dateStr, instance) {
       const tg = window.Telegram.WebApp;
-      instance.input.value = "Нічого не обрано";
+      instance.input.value = instance.formatDate(new Date(), "Y-m-d H:i");
       const clearButton = document.createElement("button");
       clearButton.textContent = "Очистити";
       clearButton.type = "button";
       clearButton.className = "flatpickr-clear-btn";
-      clearButton.disabled = true;
+      clearButton.disabled = false;
 
       clearButton.addEventListener("click", function () {
         instance.clear();
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
       okButton.textContent = "OK";
       okButton.type = "button";
       okButton.className = "flatpickr-ok-btn";
-      okButton.disabled = true;
+      okButton.disabled = false;
 
       okButton.addEventListener("click", function () {
         const dt = instance.input.value;
