@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
       clearButton.disabled = false;
 
       const timeInputs = instance.calendarContainer.querySelectorAll(".flatpickr-time input");
+      const yearInput = instance.calendarContainer.querySelector(".numInput.cur-year");
 
       const validateTime = () => {
         const hourInput = timeInputs[0];
@@ -29,6 +30,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         okButton.disabled = !(isHourValid && isMinuteValid);
       };
+
+      yearInput.addEventListener("keydown", function (event) {
+        if (
+          !(
+            (event.key >= "0" && event.key <= "9") ||
+            ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(event.key)
+          )
+        ) {
+          event.preventDefault();
+        }
+      });
+
+      yearInput.addEventListener("input", function () {
+        if (yearInput.value.length > 4) {
+          yearInput.value = yearInput.value.slice(0, 4);
+        }
+      });
 
       timeInputs.forEach((input, index) => {
         const isHourField = index === 0;
