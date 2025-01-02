@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#flatpickr", {
     enableTime: true,
-    dateFormat: "Y-m-d H:i",
+    dateFormat: "d.m.Y H:i",
     time_24hr: true,
     inline: true,
     locale: "uk",
     defaultDate: new Date(),
     onReady: function (selectedDates, dateStr, instance) {
       const tg = window.Telegram.WebApp;
-      instance.input.value = instance.formatDate(new Date(), "Y-m-d H:i");
+      instance.input.value = instance.formatDate(new Date(), "d.m.Y H:i");
       const clearButton = document.createElement("button");
       clearButton.textContent = "Очистити";
       clearButton.type = "button";
