@@ -15,6 +15,61 @@ document.addEventListener("DOMContentLoaded", function () {
       clearButton.className = "flatpickr-clear-btn";
       clearButton.disabled = false;
 
+      const timeInputs = instance.calendarContainer.querySelectorAll(".flatpickr-time input");
+
+      const validateTime = () => {
+        const hourInput = timeInputs[0];
+        const minuteInput = timeInputs[1];
+
+        const hourValue = parseInt(hourInput.value, 10);
+        const minuteValue = parseInt(minuteInput.value, 10);
+
+        const isHourValid = hourValue >= 0 && hourValue <= 24 && hourInput.value.length > 0;
+        const isMinuteValid = minuteValue >= 0 && minuteValue <= 59 && minuteInput.value.length > 0;
+
+        okButton.disabled = !(isHourValid && isMinuteValid);
+      };
+
+      timeInputs.forEach((input, index) => {
+        const isHourField = index === 0;
+
+        input.addEventListener("keydown", function (event) {
+          if (
+            !(
+              (event.key >= "0" && event.key <= "9") ||
+              ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(event.key)
+            )
+          ) {
+            event.preventDefault();
+          }
+        });
+
+        input.addEventListener("input", function () {
+          if (input.value.length > 2) {
+            input.value = input.value.slice(0, 2);
+          }
+        });
+
+        input.addEventListener("blur", function () {
+          let value = parseInt(input.value, 10);
+
+          if (isNaN(value)) {
+            input.value = isHourField ? "00" : "00";
+          } else if (isHourField) {
+            if (value < 0) value = 0;
+            if (value > 24) value = 24;
+          } else {
+            if (value < 0) value = 0;
+            if (value > 59) value = 59;
+          }
+
+          input.value = value < 10 ? `0${value}` : value;
+
+          validateTime();
+        });
+        input.addEventListener("input", validateTime);
+      });
+
       clearButton.addEventListener("click", function () {
         instance.clear();
         instance.input.value = "Нічого не обрано";
@@ -51,6 +106,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       instance.config.onChange.push(function (selectedDates) {
         clearButton.disabled = selectedDates.length === 0;
+
+        validateTime();
+
         okButton.disabled = selectedDates.length === 0;
       });
     },
