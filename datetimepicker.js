@@ -66,24 +66,20 @@ document.addEventListener("DOMContentLoaded", function () {
           if (input.value.length > 2) {
             input.value = input.value.slice(0, 2);
           }
-        });
 
-        input.addEventListener("blur", function () {
-          let value = parseInt(input.value, 10);
+          if (isHourField) {
+            let hourValue = parseInt(input.value, 10);
 
-          if (isNaN(value)) {
-            input.value = isHourField ? "00" : "00";
-          } else if (isHourField) {
-            if (value < 0) value = 0;
-            if (value > 24) value = 24;
+            if (hourValue >= 24) {
+              input.value = "23";
+            }
           } else {
-            if (value < 0) value = 0;
-            if (value > 59) value = 59;
+            let minuteValue = parseInt(input.value, 10);
+
+            if (minuteValue >= 60) {
+              input.value = "59";
+            }
           }
-
-          input.value = value < 10 ? `0${value}` : value;
-
-          validateTime();
         });
         input.addEventListener("input", validateTime);
       });
