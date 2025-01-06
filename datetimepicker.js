@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     inline: true,
     locale: "uk",
     defaultDate: new Date(),
+    defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
       const tg = window.Telegram.WebApp;
       instance.input.value = instance.formatDate(new Date(), "d.m.Y H:i");
