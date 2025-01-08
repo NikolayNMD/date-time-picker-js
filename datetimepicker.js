@@ -149,6 +149,8 @@ function decodePayload(search) {
 function sendMessageToBot(dt) {
   const tg = window.Telegram.WebApp;
 
+  tg.ready();
+
   const payload = decodePayload(window.location.search);
   if (payload) {
     payload.dt = dt;
