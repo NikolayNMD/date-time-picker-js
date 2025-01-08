@@ -105,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
             dt: dt,
           })
         );
+
+        sendMessageToBot(dt)
       });
 
       const buttonContainer = document.createElement("div");
@@ -129,3 +131,45 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 });
+
+function decodePayload(search) {
+  const params = new URLSearchParams(search);
+  if (params.has("payload")) {
+    try {
+      const base64Payload = params.get("payload");
+      const decodedPayload = atob(base64Payload);
+      return JSON.parse(decodedPayload);
+    } catch (error) {
+      console.log("Error decoding payload: " + error);
+    }
+  }
+  return null;
+}
+
+function sendMessageToBot(dt) {
+  const tg = window.Telegram.WebApp;
+
+  const payload = decodePayload(window.location.search);
+  if (payload) {
+    payload.dt = dt;
+  }
+
+  const authToken = payload && payload.auth ? payload.auth : "";
+
+  const requestBody = {
+    init_qsl: tg.initData,
+    payload: payload,
+  };
+
+  fetch("https://my-dev.uar.net/api/tg_payload_message", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify(requestBody),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log("Success: " + JSON.stringify(data)))
+    .catch((error) => console.log("Error: " + error));
+}

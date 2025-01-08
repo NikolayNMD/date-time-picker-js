@@ -80,11 +80,6 @@ body {
   overflow-y: auto;
 }
 
-/* .main_title {
-  text-align: center;
-  margin-bottom: 15px;
-} */
-
 .flatpickr_div {
   display: flex;
   flex-direction: column;
@@ -151,8 +146,3 @@ body {
   color: #666666 !important;
   cursor: not-allowed !important;
 }
-
-/* .invalid {
-  border: 2px solid red !important;
-  background-color: #ffe6e6 !important;
-} */
