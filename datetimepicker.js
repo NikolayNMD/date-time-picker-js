@@ -170,6 +170,9 @@ function sendMessageToBot(dt) {
     body: JSON.stringify(requestBody),
   })
     .then((response) => response.json())
-    .then((data) => console.log("Success: " + JSON.stringify(data)))
+    .then((data) => {
+      console.log("Success: " + JSON.stringify(data));
+      tg.close();
+    })
     .catch((error) => console.log("Error: " + error));
 }
