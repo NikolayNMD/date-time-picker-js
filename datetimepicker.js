@@ -1,4 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
+  
+  const loaderOverlay = document.createElement("div");
+  loaderOverlay.className = "loader-overlay";
+  loaderOverlay.innerHTML = `<div class="loader"></div>`;
+  document.body.appendChild(loaderOverlay);
+
+  // Функція для показу/приховування лоадера
+  function toggleLoader(show, success = false) {
+    if (show) {
+      loaderOverlay.classList.add("visible");
+      const loaderElement = loaderOverlay.querySelector(".loader");
+      loaderElement.classList.toggle("success", success);
+    } else {
+      loaderOverlay.classList.remove("visible");
+      const loaderElement = loaderOverlay.querySelector(".loader");
+      loaderElement.classList.remove("success");
+    }
+  }
+
   flatpickr("#flatpickr", {
     enableTime: true,
     dateFormat: "d.m.Y H:i",
@@ -106,7 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
           })
         );
 
-        sendMessageToBot(dt)
+        toggleLoader(true);
+
+        sendMessageToBot(dt, toggleLoader)
       });
 
       const buttonContainer = document.createElement("div");
@@ -146,7 +167,7 @@ function decodePayload(search) {
   return null;
 }
 
-function sendMessageToBot(dt) {
+function sendMessageToBot(dt, toggleLoader) {
   const tg = window.Telegram.WebApp;
 
   tg.ready();
@@ -173,10 +194,16 @@ function sendMessageToBot(dt) {
     },
     body: JSON.stringify(requestBody),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success: " + JSON.stringify(data));
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Success: " + JSON.stringify(data));
+    toggleLoader(true, true);
+    setTimeout(() => {
       tg.close();
-    })
-    .catch((error) => console.log("Error: " + error));
+    }, 1000);
+  })
+  .catch((error) => {
+    console.log("Error: " + error);
+    toggleLoader(false);
+  });
 }
