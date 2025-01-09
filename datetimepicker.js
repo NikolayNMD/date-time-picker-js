@@ -163,7 +163,9 @@ function sendMessageToBot(dt) {
     payload: payload,
   };
 
-  fetch("https://my-dev.uar.net/api/tg_payload_message", {
+  const devOrNot = payload.is_dev ? '-dev' : null;
+
+  fetch(`https://my${devOrNot}.uar.net/api/tg_payload_message`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
