@@ -33,16 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
       function applyTheme(themeParams) {
         const root = document.documentElement;
     
-        // Задайте змінні CSS на основі теми Telegram
         root.style.setProperty("--background-color", themeParams.bg_color || "#1a2c71");
+        root.style.setProperty("--datetime-picker-background", themeParams.secondary_bg_color || "white");
         root.style.setProperty("--text-color", themeParams.text_color || "#333");
-        // root.style.setProperty("--datetime-picker-background", themeParams.button_color || "#0088cc");
       }
     
-      // Ініціалізуйте тему при завантаженні
       applyTheme(tg.themeParams);
     
-      // Слухайте зміну теми
       tg.onEvent("themeChanged", function () {
         applyTheme(tg.themeParams);
       });
