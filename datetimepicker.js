@@ -7,6 +7,29 @@ document.addEventListener("DOMContentLoaded", function () {
   loaderOverlay.innerHTML = `<div class="loader"></div>`;
   document.body.appendChild(loaderOverlay);
 
+  function applyFlatpickrTheme(isDarkTheme) {
+    const existingLink = document.querySelector('link[rel="stylesheet"][data-flatpickr-theme]');
+    if (existingLink) {
+      existingLink.remove(); // Видаляємо старий файл теми
+    }
+
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.type = "text/css";
+    themeLink.dataset.flatpickrTheme = "true";
+
+    if (isDarkTheme) {
+      themeLink.href = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
+    } else {
+      themeLink.href = "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css";
+    }
+
+    document.head.appendChild(themeLink);
+  }
+  
+  const isDarkTheme = tg.themeParams.is_dark;
+  applyFlatpickrTheme(isDarkTheme);
+
   // Функція для показу/приховування лоадера
   function toggleLoader(show, success = false) {
     if (show) {
@@ -42,6 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
       tg.onEvent("themeChanged", function () {
         applyTheme(tg.themeParams);
+
+        const updatedTheme = tg.themeParams.is_dark;
+
+        applyFlatpickrTheme(updatedTheme);
       });
     
       // const tg = window.Telegram.WebApp;
