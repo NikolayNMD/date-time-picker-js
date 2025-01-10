@@ -106,6 +106,7 @@ body {
 
 .flatpickr-calendar {
   width: 320px !important;
+  background: white !important;
 }
 
 .flatpickr-innerContainer {
