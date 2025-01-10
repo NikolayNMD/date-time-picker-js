@@ -2,9 +2,6 @@
   --background-color: #1a2c71;
   --text-color: #333;
   --datetime-picker-background: white;
-  --flatpickr-bg: #ffffff;
-  --flatpickr-text: #000000;
-  --flatpickr-highlight: #0088cc;
 }
 
 /* Reset styles */
@@ -107,17 +104,6 @@ body {
 
 .flatpickr-calendar {
   width: 320px !important;
-  background-color: var(--flatpickr-bg);
-  color: var(--flatpickr-text);
-}
-
-.flatpickr-day {
-  color: var(--flatpickr-text);
-}
-
-.flatpickr-day.selected {
-  background-color: var(--flatpickr-highlight);
-  border-color: var(--flatpickr-highlight);
 }
 
 .flatpickr-innerContainer {

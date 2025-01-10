@@ -7,26 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
   loaderOverlay.innerHTML = `<div class="loader"></div>`;
   document.body.appendChild(loaderOverlay);
 
-  function applyTheme(instance) {
-    const themeParams = tg.themeParams;
-    const isDarkTheme = themeParams.is_dark;
-
-    const calendarContainer = instance.calendarContainer;
-
-    if (isDarkTheme) {
-      calendarContainer.style.backgroundColor = themeParams.bg_color || "#1c1c1c"; // Фон
-      calendarContainer.style.color = themeParams.text_color || "#ffffff"; // Текст
-    } else {
-      calendarContainer.style.backgroundColor = "#ffffff"; // Світлий фон
-      calendarContainer.style.color = "#000000"; // Темний текст
-    }
-  }
-
-  // Слухайте зміну теми
-  tg.onEvent("themeChanged", function () {
-    applyTheme(tg.themeParams);
-  });
-
   // Функція для показу/приховування лоадера
   function toggleLoader(show, success = false) {
     if (show) {
@@ -49,6 +29,24 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultDate: new Date(),
     defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
+
+      function applyTheme(themeParams) {
+        const root = document.documentElement;
+    
+        // Задайте змінні CSS на основі теми Telegram
+        root.style.setProperty("--background-color", themeParams.bg_color || "#1a2c71");
+        root.style.setProperty("--text-color", themeParams.text_color || "#333");
+        // root.style.setProperty("--datetime-picker-background", themeParams.button_color || "#0088cc");
+      }
+    
+      // Ініціалізуйте тему при завантаженні
+      applyTheme(tg.themeParams);
+    
+      // Слухайте зміну теми
+      tg.onEvent("themeChanged", function () {
+        applyTheme(tg.themeParams);
+      });
+    
       // const tg = window.Telegram.WebApp;
       instance.input.value = instance.formatDate(new Date(), "d.m.Y H:i");
       const clearButton = document.createElement("button");
@@ -163,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
       buttonContainer.appendChild(okButton);
 
       instance.calendarContainer.appendChild(buttonContainer);
-      applyTheme(instance);
 
       instance.config.onChange.push(function (selectedDates) {
         clearButton.disabled = selectedDates.length === 0;
@@ -173,15 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
         okButton.disabled = selectedDates.length === 0;
       });
     },
-  });
-  tg.ready();
-
-  // Слухаємо зміну теми Telegram
-  tg.onEvent("themeChanged", () => {
-    const fpInstance = document.querySelector("#flatpickr")._flatpickr;
-    if (fpInstance) {
-      applyTheme(fpInstance);
-    }
   });
 });
 
