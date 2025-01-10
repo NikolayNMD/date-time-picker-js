@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.appendChild(loaderOverlay);
 
   function applyFlatpickrTheme(isDarkTheme) {
-    const existingLink = document.querySelector('link[rel="stylesheet"][data-flatpickr-theme]');
+    const existingLink = document.querySelector('link[rel="stylesheet"][type="text/css"]');
+    console.log(existingLink)
     if (existingLink) {
       existingLink.remove(); // Видаляємо старий файл теми
     }
