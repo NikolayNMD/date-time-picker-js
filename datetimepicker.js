@@ -9,27 +9,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function applyFlatpickrTheme(isDarkTheme) {
     const existingLink = document.querySelector('link[rel="stylesheet"][type="text/css"]');
-    console.log(existingLink)
     if (existingLink) {
-      existingLink.remove(); // Видаляємо старий файл теми
+      existingLink.remove();
     }
 
     const themeLink = document.createElement("link");
-    themeLink.rel = "stylesheet";
-    themeLink.type = "text/css";
-    themeLink.dataset.flatpickrTheme = "true";
 
     if (isDarkTheme) {
+      themeLink.rel = "stylesheet";
+      themeLink.type = "text/css";
+      themeLink.dataset.flatpickrTheme = "true";
       themeLink.href = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
-    } else {
-      themeLink.href = "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css";
     }
 
     document.head.appendChild(themeLink);
   }
   
-  const isDarkTheme = tg.themeParams.is_dark;
-  applyFlatpickrTheme(isDarkTheme);
+  // const isDarkTheme = tg.themeParams.is_dark;
+  // applyFlatpickrTheme(isDarkTheme);
 
   // Функція для показу/приховування лоадера
   function toggleLoader(show, success = false) {
@@ -53,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultDate: new Date(),
     defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
+
+      // applyFlatpickrTheme(isDarkTheme);
 
       function applyTheme(themeParams) {
         const root = document.documentElement;
