@@ -1,9 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
   
+  const tg = window.Telegram.WebApp;
+
   const loaderOverlay = document.createElement("div");
   loaderOverlay.className = "loader-overlay";
   loaderOverlay.innerHTML = `<div class="loader"></div>`;
   document.body.appendChild(loaderOverlay);
+
+  function applyTheme(themeParams) {
+    const root = document.documentElement;
+
+    // Задайте змінні CSS на основі теми Telegram
+    root.style.setProperty("--flatpickr-bg", themeParams.bg_color || "#ffffff");
+    root.style.setProperty("--flatpickr-text", themeParams.text_color || "#000000");
+    root.style.setProperty("--flatpickr-highlight", themeParams.button_color || "#0088cc");
+  }
+
+  // Ініціалізуйте тему при завантаженні
+  applyTheme(tg.themeParams);
+
+  // Слухайте зміну теми
+  tg.onEvent("themeChanged", function () {
+    applyTheme(tg.themeParams);
+  });
 
   // Функція для показу/приховування лоадера
   function toggleLoader(show, success = false) {
@@ -27,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultDate: new Date(),
     defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
-      const tg = window.Telegram.WebApp;
+      // const tg = window.Telegram.WebApp;
       instance.input.value = instance.formatDate(new Date(), "d.m.Y H:i");
       const clearButton = document.createElement("button");
       clearButton.textContent = "Очистити";
