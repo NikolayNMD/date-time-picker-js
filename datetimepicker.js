@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         root.style.setProperty("--background-color", themeParams.bg_color || "#1a2c71");
         root.style.setProperty("--datetime-picker-background", themeParams.secondary_bg_color || "white");
         root.style.setProperty("--text-color", themeParams.text_color || "#333");
-        root.style.setProperty("--calendar-bg", themeParams.section_bg_color || "white");
       }
     
       applyTheme(tg.themeParams);

@@ -2,9 +2,7 @@
   --background-color: #1a2c71;
   --text-color: #333;
   --datetime-picker-background: white;
-  --calendar-bg: white;
   --tg-theme-secondary-bg-color: rgb(60, 60, 60);
-  --tg-theme-section-bg-color: rgb(188, 188, 188);
 }
 
 /* Reset styles */
@@ -108,7 +106,6 @@ body {
 
 .flatpickr-calendar {
   width: 320px !important;
-  background: var(--calendar-bg) !important;
 }
 
 .flatpickr-innerContainer {
