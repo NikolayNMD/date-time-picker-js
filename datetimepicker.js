@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     onReady: function (selectedDates, dateStr, instance) {
 
       function applyTheme(themeParams) {
+        console.log(themeParams)
         const root = document.documentElement;
     
         // Застосовуємо кольори для вашого додатка
@@ -42,20 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const darkThemeLinkHref = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
         let themeLink = document.querySelector('link[href="' + darkThemeLinkHref + '"]');
     
-        if (themeParams.is_dark) {
-          // Додаємо лінк темної теми, якщо його ще немає
-          if (!themeLink) {
-            themeLink = document.createElement("link");
-            themeLink.rel = "stylesheet";
-            themeLink.type = "text/css";
-            themeLink.href = darkThemeLinkHref;
-            document.head.appendChild(themeLink);
-          }
-        } else {
-          // Видаляємо лінк темної теми, якщо він існує
-          if (themeLink) {
-            themeLink.remove();
-          }
+        if (!themeParams.is_dark) {
+          themeLink.remove();
         }
       }
     
