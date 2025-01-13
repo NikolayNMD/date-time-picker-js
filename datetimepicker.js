@@ -20,27 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function applyFlatpickrTheme(isDarkTheme) {
-    const existingLink = document.querySelector('link[rel="stylesheet"][type="text/css"]');
-    if (existingLink) {
-      existingLink.remove();
-    }
-
-    const themeLink = document.createElement("link");
-    themeLink.rel = "stylesheet";
-    themeLink.type = "text/css";
-    themeLink.dataset.flatpickrTheme = "true";
-
-    if (isDarkTheme) {
-      themeLink.href = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
-    }
-
-    document.head.appendChild(themeLink);
-  }
-
-  const isDarkTheme = tg.themeParams.is_dark;
-  applyFlatpickrTheme(isDarkTheme);
-
   flatpickr("#flatpickr", {
     enableTime: true,
     dateFormat: "d.m.Y H:i",
@@ -54,18 +33,36 @@ document.addEventListener("DOMContentLoaded", function () {
       function applyTheme(themeParams) {
         const root = document.documentElement;
     
+        // Застосовуємо кольори для вашого додатка
         root.style.setProperty("--background-color", themeParams.bg_color || "#1a2c71");
         root.style.setProperty("--datetime-picker-background", themeParams.secondary_bg_color || "white");
         root.style.setProperty("--text-color", themeParams.text_color || "#333");
+    
+        // Динамічне управління темою Flatpickr
+        const darkThemeLinkHref = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
+        let themeLink = document.querySelector('link[href="' + darkThemeLinkHref + '"]');
+    
+        if (themeParams.is_dark) {
+          // Додаємо лінк темної теми, якщо його ще немає
+          if (!themeLink) {
+            themeLink = document.createElement("link");
+            themeLink.rel = "stylesheet";
+            themeLink.type = "text/css";
+            themeLink.href = darkThemeLinkHref;
+            document.head.appendChild(themeLink);
+          }
+        } else {
+          // Видаляємо лінк темної теми, якщо він існує
+          if (themeLink) {
+            themeLink.remove();
+          }
+        }
       }
     
       applyTheme(tg.themeParams);
     
       tg.onEvent("themeChanged", function () {
         applyTheme(tg.themeParams);
-
-        const updatedTheme = tg.themeParams.is_dark;
-        applyFlatpickrTheme(updatedTheme);
       });
     
       // const tg = window.Telegram.WebApp;
