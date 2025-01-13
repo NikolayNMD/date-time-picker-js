@@ -30,8 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
 
+      function isDarkTheme(themeParams) {
+        // Перевіряємо яскравість кольору фону
+        const bgColor = themeParams.bg_color || "white"; // Білий колір за замовчуванням
+        const rgb = parseInt(bgColor.slice(1), 16); // Перетворюємо HEX у RGB
+        const r = (rgb >> 16) & 0xff;
+        const g = (rgb >> 8) & 0xff;
+        const b = rgb & 0xff;
+        const brightness = 0.299 * r + 0.587 * g + 0.114 * b; // Вираховуємо яскравість
+        return brightness < 128; // Якщо яскравість менша за 128, тема темна
+      }
+
       function applyTheme(themeParams) {
-        console.log(themeParams)
         const root = document.documentElement;
     
         // Застосовуємо кольори для вашого додатка
@@ -43,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const darkThemeLinkHref = "https://npmcdn.com/flatpickr/dist/themes/dark.css";
         let themeLink = document.querySelector('link[href="' + darkThemeLinkHref + '"]');
     
-        if (!themeParams.is_dark) {
+        if (!isDarkTheme(themeParams)) {
           themeLink.remove();
         }
       }
