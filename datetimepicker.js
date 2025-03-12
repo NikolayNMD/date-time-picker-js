@@ -30,6 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultHour: 0,
     onReady: function (selectedDates, dateStr, instance) {
 
+    const payload = decodePayload(window.location.search);
+
+    if (payload.deny) {
+      if (payload.deny === "past") {
+        instance.set("minDate", new Date());
+      } else if (payload.deny === "future") {
+        instance.set("maxDate", new Date());
+      }
+    }
+
+    instance.input.value = instance.formatDate(new Date(), "d.m.Y H:i");
+
       function isDarkTheme(themeParams) {
         // Перевіряємо яскравість кольору фону
         const bgColor = themeParams.bg_color || "white"; // Білий колір за замовчуванням
