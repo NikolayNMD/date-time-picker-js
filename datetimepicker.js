@@ -243,9 +243,14 @@ function sendMessageToBot(dt, toggleLoader) {
     },
     body: JSON.stringify(requestBody),
   })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Success: " + JSON.stringify(data));
+  .then(async (response) => {
+    const responseData = await response.json().catch(() => null);
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}\nURL: ${requestUrl}\nResponse: ${JSON.stringify(responseData)}`
+      );
+    }
+    console.log("Success:", responseData);
     toggleLoader(true, true);
     setTimeout(() => {
       tg.close();
@@ -253,7 +258,7 @@ function sendMessageToBot(dt, toggleLoader) {
   })
   .catch((error) => {
     console.log("Error: " + error);
-    alert("Помилка: " + error);
+    alert(`Помилка:\n${error.message}`);
     toggleLoader(false);
   });
 }
