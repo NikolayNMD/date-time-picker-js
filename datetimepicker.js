@@ -253,6 +253,7 @@ function sendMessageToBot(dt, toggleLoader) {
   })
   .catch((error) => {
     console.log("Error: " + error);
+    alert("Помилка: " + error);
     toggleLoader(false);
   });
 }
