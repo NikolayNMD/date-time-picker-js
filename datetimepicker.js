@@ -233,9 +233,10 @@ function sendMessageToBot(dt, toggleLoader) {
     payload: payload,
   };
 
-  const devOrNot = payload.is_dev ? '-dev' : null;
+  const devOrNot = payload.is_dev ? "-dev" : null;
+  const requestUrl = `https://my${devOrNot}.uar.net/api/tg_payload_message`;
 
-  fetch(`https://my${devOrNot}.uar.net/api/tg_payload_message`, {
+  fetch(requestUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
