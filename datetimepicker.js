@@ -245,20 +245,27 @@ function sendMessageToBot(dt, toggleLoader) {
     body: JSON.stringify(requestBody),
   })
   .then(async (response) => {
-    const responseData = await response.json().catch(() => null);
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch (jsonError) {
+      responseData = `Не вдалося розпарсити JSON. Сервер відповів: ${await response.text()}`;
+    }
+
     if (!response.ok) {
       throw new Error(
         `HTTP ${response.status}: ${response.statusText}\nURL: ${requestUrl}\nResponse: ${JSON.stringify(responseData)}`
       );
     }
-    console.log("Success:", responseData);
+
+    console.log("Success: ", responseData);
     toggleLoader(true, true);
     setTimeout(() => {
       tg.close();
     }, 1000);
   })
   .catch((error) => {
-    console.log("Error: " + error);
+    console.error("Помилка:", error);
     alert(`Помилка:\n${error.message}`);
     toggleLoader(false);
   });
