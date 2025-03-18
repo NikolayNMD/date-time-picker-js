@@ -233,10 +233,9 @@ function sendMessageToBot(dt, toggleLoader) {
     payload: payload,
   };
 
-  const devOrNot = payload.is_dev ? "-dev" : null;
-  const requestUrl = `https://my${devOrNot}.uar.net/api/tg_payload_message`;
+  const devOrNot = payload.is_dev ? '-dev' : '';
 
-  fetch(requestUrl, {
+  fetch(`https://my${devOrNot}.uar.net/api/tg_payload_message`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -244,29 +243,16 @@ function sendMessageToBot(dt, toggleLoader) {
     },
     body: JSON.stringify(requestBody),
   })
-  .then(async (response) => {
-    let responseData;
-    try {
-      responseData = await response.json();
-    } catch (jsonError) {
-      responseData = `Не вдалося розпарсити JSON. Сервер відповів: ${await response.text()}`;
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}\nURL: ${requestUrl}\nResponse: ${JSON.stringify(responseData)}`
-      );
-    }
-
-    console.log("Success: ", responseData);
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Success: " + JSON.stringify(data));
     toggleLoader(true, true);
     setTimeout(() => {
       tg.close();
     }, 1000);
   })
   .catch((error) => {
-    console.error("Помилка:", error);
-    alert(`Помилка:\n${error.message}`);
+    console.log("Error: " + error);
     toggleLoader(false);
   });
 }
